@@ -1,0 +1,43 @@
+//BFS Solution
+
+class Solution {
+public:
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        //making of adj list
+        vector<vector<int>> adj(numCourses);
+        for(auto edge : prerequisites){
+            int v = edge[0];
+            int u = edge[1];
+            adj[u].push_back(v);
+        }
+        vector<int> inDegree(numCourses, 0);
+        for(int i=0; i<numCourses; i++){
+            for(auto node: adj[i]){
+                inDegree[node]++;
+            }
+        }
+
+        //now topo sort
+
+        queue<int> q;
+        for(int i=0; i<numCourses; i++){
+            if(inDegree[i]==0) q.push(i);
+        }
+        int count = 0;
+        while(!q.empty()){
+            int t = q.front();
+            q.pop();
+            count++;
+            for(auto ngbr: adj[t]){
+                inDegree[ngbr]--;
+                if(inDegree[ngbr]==0) q.push(ngbr);
+            }
+        }
+        return numCourses==count;
+    }
+};
+
+
+
+// DFS Solution
+
