@@ -41,3 +41,41 @@ public:
 
 // DFS Solution
 
+class Solution {
+public:
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        // making of adj list
+        vector<vector<int>> adj(numCourses);
+        for (auto edge : prerequisites) {
+            int v = edge[0];
+            int u = edge[1];
+            adj[u].push_back(v);
+        }
+        vector<int> vis(numCourses, 0);
+        vector<int> dfsVis(numCourses, 0);
+        for (int i = 0; i < numCourses; i++) {
+            if (!vis[i]) {
+                if (!dfs(adj, vis, dfsVis, i)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    bool dfs(vector<vector<int>>& adj, vector<int>& vis, vector<int> dfsVis,
+             int node) {
+        vis[node] = 1;
+        dfsVis[node] = 1;
+        for (auto ngbr : adj[node]) {
+            if (dfsVis[ngbr] == 1)
+                return false;
+            if (!vis[ngbr])
+                if (!dfs(adj, vis, dfsVis, ngbr))
+                    return false;
+        }
+        dfsVis[node] = 0;
+        return true;
+    }
+};
+
