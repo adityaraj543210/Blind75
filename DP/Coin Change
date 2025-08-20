@@ -1,0 +1,24 @@
+ 1. First Approach Brute Force (Recursion) TLE
+
+
+class Solution {
+public:
+    int coinsCount = INT_MAX;
+    
+    void rec(vector<int> &coins, int index,int count, int amount){
+        if(amount<=0 || index == coins.size()){
+            if(amount == 0) coinsCount = min(coinsCount, count);
+            return;
+        }
+        //take
+        if(coins[index]<=amount) rec(coins, index,count+1, amount-coins[index]);
+        //nottake
+        rec(coins, index+1,count, amount);
+    }
+
+    int coinChange(vector<int>& coins, int amount) {
+        rec(coins, 0,0, amount); //array, startindex,coinCount, amount to make
+        return coinsCount==INT_MAX?-1:coinsCount;
+    }
+};
+
