@@ -22,3 +22,58 @@ public:
     }
 };
 
+
+2. Memoization (top down)
+class Solution {
+public:
+   
+    vector<vector<int>> dp;
+
+
+    int rec(vector<int> &coins, int index, int amount){
+        if(amount<=0 || index == coins.size()){
+            if(amount == 0) return dp[index][amount] = 0;
+            return INT_MAX;
+        }
+        if(dp[index][amount] != -1) return dp[index][amount];
+        //take
+         int take = rec(coins, index, amount-coins[index])==INT_MAX?INT_MAX:1+rec(coins, index, amount-coins[index]);
+        //nottake
+        int nottake = rec(coins, index+1, amount);
+
+        return dp[index][amount] = min(take, nottake);
+    }
+
+    int coinChange(vector<int>& coins, int amount) {
+        dp.resize(coins.size()+1, vector<int> (amount+1, -1));
+        //dp[i][j]-> fewest coin to get amount starting index i
+        return rec(coins, 0, amount)==INT_MAX?-1:dp[0][amount]; //array, startindex,coinCount, amount to make
+    }
+};
+
+3. Bottom up
+
+class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        //bottom up
+        //dp[i][j]-> minm no of coins reqd to make j starting from index i
+        //make a table before coding to understand better
+        int n = coins.size();
+        vector<vector<int>> dp(coins.size()+1, vector<int> (amount+1, INT_MAX));
+        for(int i=0; i<n+1; i++){
+            dp[i][0] = 0;
+        }
+
+        for(int i=1; i<n+1; i++){
+            for(int j=1; j<amount+1; j++){
+                if(coins[i-1]<=j){
+                    dp[i][j] = dp[i][j-coins[i-1]] == INT_MAX ? dp[i-1][j] : min(dp[i-1][j], 1+dp[i][j-coins[i-1]]);
+                }
+                else dp[i][j] = dp[i-1][j];
+            }
+        }
+        return dp[n][amount]==INT_MAX?-1:dp[n][amount];
+
+    }
+};
