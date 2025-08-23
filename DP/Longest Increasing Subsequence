@@ -1,0 +1,21 @@
+1. Recursion (Take or not take) 2^n.
+
+class Solution {
+public:
+    int result = 0;
+    void rec(vector<int> &nums, int prevIndex, int i, int count){
+        if(i==nums.size()){
+            result = max(count, result);
+            return;
+        }
+        if(prevIndex == -1 || nums[i]>nums[prevIndex]){
+            rec(nums, i, i+1, count+1);
+        }
+        rec(nums, prevIndex, i+1, count);   
+    }
+    int lengthOfLIS(vector<int>& nums) {
+        //vector<int> curr;
+        rec(nums, -1, 0, 0);   //array, last index used, curr index,count till now
+        return result;
+    }
+};
