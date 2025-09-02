@@ -1,0 +1,28 @@
+1. Recursive (Brute Force Approach)
+class Solution {
+public:
+    int result = 0;
+    string s1,s2;
+    int m,n;
+    void lcs(int index1, int index2, string curr){
+        if(index1==m || index2 == n){
+            int s = curr.size();
+            result = max(result, s);
+            return;
+        }
+        if(s1[index1]==s2[index2]){
+            curr += s1[index1];
+            lcs(index1+1, index2+1, curr);
+        }
+        else{
+            lcs(index1+1, index2, curr);
+            lcs(index1, index2+1, curr);
+        }
+    }
+    int longestCommonSubsequence(string text1, string text2) {
+        s1=text1,s2=text2;
+        m = s1.size(), n = s2.size();
+        lcs(0,0,"");
+        return result;
+    }
+};
