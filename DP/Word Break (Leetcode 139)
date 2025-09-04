@@ -1,0 +1,106 @@
+1. Recursion
+class Solution {
+public:
+    unordered_map<string,int> mp;
+
+    bool help(string &s, int index){
+        if(index == s.size()) {
+            return true;
+        }
+        for(int j=index; j<s.size(); j++){
+            if(mp[s.substr(index, j-index+1)]) {
+                if(help(s, j+1)) return true;
+            }
+        }
+        return false;
+
+    }
+    bool wordBreak(string s, vector<string>& wordDict) {
+        for(auto word:wordDict) mp[word]++;
+        int n = s.size();
+        return help(s, 0); //string and start index (fn will return if starting at 0 is it poss)
+    }
+};
+
+2. Memoization (n3)
+class Solution {
+public:
+    unordered_map<string,int> mp;
+    vector<int> dp;
+    bool help(string &s, int index){
+        if(index == s.size()) {
+            return true;
+        }
+        if(dp[index] != -1) return dp[index];
+        for(int j=index; j<s.size(); j++){
+            if(mp[s.substr(index, j-index+1)]) {
+                if(help(s, j+1)) return dp[index] = 1;
+            }
+        }
+        return dp[index] = 0;
+
+    }
+    bool wordBreak(string s, vector<string>& wordDict) {
+        for(auto word:wordDict) mp[word]++;
+        int n = s.size();
+        dp.resize(n, -1);
+        return dp[0]= help(s, 0); //string and start index (fn will return if starting at 0 is it poss)
+    }
+};
+
+3. Memoizatoin (n2)
+class Solution {
+public:
+    unordered_map<string,int> mp;
+    vector<int> dp;
+    bool help(string &s, int index){
+        if(index == s.size()) {
+            return true;
+        }
+        if(dp[index] != -1) return dp[index];
+        string temp = "";
+        for(int j=index; j<s.size(); j++){
+            temp += s[j];
+            if(mp[temp]) {
+                if(help(s, j+1)) return dp[index] = 1;
+            }
+        }
+        return dp[index] = 0;
+
+    }
+    bool wordBreak(string s, vector<string>& wordDict) {
+        for(auto word:wordDict) mp[word]++;
+        int n = s.size();
+        dp.resize(n, -1);
+        //dp[x] means if s[x...end] can be segmented or not
+        dp[0]= help(s, 0); //string and start index (fn will return if starting at 0 is it poss)
+        //for(auto i:dp) cout<<i<<" ";
+        return dp[0];
+    }
+};
+
+4. Bottom up/ tabulation
+
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        int n = s.size();
+        vector<int> dp(n,0);
+        unordered_map<string,int> mp;
+        for(auto word:wordDict) mp[word]++;
+
+        for(int j= n-1; j>=0; j--){
+            string str = "";
+            for(int i=j; i<n; i++){
+                str += s[i];
+                if(mp[str]) 
+                {
+                    if(i==n-1) dp[j]=1;
+                    else dp[j] = max(dp[j], dp[i+1]);
+                }
+            }
+        }
+        return dp[0];
+
+    }
+};
