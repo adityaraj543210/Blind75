@@ -1,0 +1,65 @@
+1. Recursion
+class Solution {
+public:
+    int help(string &s, int index){
+        if(index>= s.size() || s[index]=='0') return 0;
+        if(index == s.size()-1) return 1;
+        if(index == s.size()-2){
+            int num = stoi(s.substr(index));
+            if(num == 10 || num == 20) return 1;
+            if(num%10 == 0) return 0;
+            if(num<=26) return 2;
+            else return 1;
+        }
+
+        string first = s.substr(index, 1);
+        string second = s.substr(index, 2);
+        int f = help(s, index+1);
+        int sec = 0;
+        if(stoi(second)<=26) sec = help(s, index+2);
+
+        return f+sec;
+
+    }
+
+    int numDecodings(string s) {
+        return help(s, 0);
+        //return 0;
+    }
+};
+
+2. Memoization
+class Solution {
+public:
+    int help(string &s, int index, vector<int> &dp){
+        if(index>= s.size() || s[index]=='0') return 0;
+        if(index == s.size()-1) return 1;
+        if(index == s.size()-2){
+            int num = stoi(s.substr(index));
+            if(num == 10 || num == 20) return 1;
+            if(num%10 == 0) return 0;
+            if(num<=26) return 2;
+            else return 1;
+        }
+
+        if(dp[index] != -1) return dp[index];
+
+        string first = s.substr(index, 1);
+        string second = s.substr(index, 2);
+        int f = help(s, index+1, dp);
+        int sec = 0;
+        if(stoi(second)<=26) sec = help(s, index+2, dp);
+
+        return dp[index] = f+sec;
+
+    }
+
+    int numDecodings(string s) {
+        int n = s.size();
+        vector<int> dp(n, -1);
+        return help(s, 0, dp);
+        //return 0;
+    }
+};
+
+3. 
