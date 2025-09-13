@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int res = INT_MIN;
+
+    //this fn will update sum and return one side down 
+    int help(TreeNode* root){
+         if(root==NULL) return 0;
+        int l = help(root->left);
+        int r = help(root->right);
+        res = max({l+r+root->val, res});
+        return max({root->val+l, root->val+r, 0});
+    }
+    int maxPathSum(TreeNode* root) {
+       help(root);
+       return res;
+    }
+};
