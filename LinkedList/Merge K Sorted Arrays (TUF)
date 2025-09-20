@@ -1,0 +1,71 @@
+1. Approach 1 (k3)
+class Solution {
+public:
+    vector<int> merge2Sorted(vector<int> arr1, vector<int> arr2){
+        int m = arr1.size();
+        int n = arr2.size();
+        int i=0,j=0;
+        vector<int> res;
+        while(i<m && j<n){
+            if(arr1[i]<arr2[j]){
+                res.push_back(arr1[i]);
+                i++;
+            }
+            else{
+                res.push_back(arr2[j]);
+                j++;
+            }
+        }
+        while(i<m){
+            res.push_back(arr1[i]);
+            i++;
+        }
+        while(j<n){
+            res.push_back(arr2[j]);
+            j++;
+        }
+        return res;
+    }
+
+    vector<int> mergeKSortedArrays(vector<vector<int>>& arr, int k) {
+        // Your code goes here
+        vector<int> res;
+        for(int i=0; i<k; i++){
+            res = merge2Sorted(res, arr[i]);
+        }
+        return res;
+    }
+};
+
+2. Using Priority Queeu
+class Solution {
+public:
+    vector<int> mergeKSortedArrays(vector<vector<int>>& arr, int k) {
+        // Your code goes here
+        priority_queue<vector<int>> pq;
+
+        //insert 1st element of all arrays
+        for(int i=0; i<k; i++){
+            pq.push({-arr[i][0], i, 0}); // element, arr index, elementIndex
+        }
+
+         vector<int> res;
+         while(!pq.empty()){
+             auto vec = pq.top();
+             pq.pop();
+             int ele = -vec[0];
+             int arrindex = vec[1];
+             int eleIndex = vec[2];
+             res.push_back(ele);
+             if(eleIndex+1<k){
+                pq.push({-arr[arrindex][eleIndex+1], arrindex, eleIndex+1});
+             }
+         }
+         return res;
+    }
+};
+
+
+
+
+
