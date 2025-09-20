@@ -1,0 +1,68 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* rev(ListNode* head){
+        if(head==NULL || head->next == NULL) return head;
+        ListNode* prev = NULL;
+        ListNode* curr = head;
+        while(curr){
+            ListNode* temp = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = temp;
+        }
+        return prev;
+    }
+
+    void reorderList(ListNode* head) {
+        int count = 0;
+        ListNode* dummyHead = head;
+        while(dummyHead){
+            count++;
+            dummyHead = dummyHead->next;
+        }
+
+        int mid = (count+1)/2;
+        ListNode* headmid = head;
+        ListNode* prev;
+        for(int i=0; i<mid; i++){
+            prev = headmid;
+            headmid = headmid->next;
+        }
+        prev->next = NULL;
+        ListNode* secPart = rev(headmid);
+       
+        ListNode* list1 = head;
+        ListNode* list2 = secPart;
+
+       //cout<<list1->val <<" "<<list2->val;
+        bool flag = true;
+        while(list1 && list2){
+            cout<<list1->val<<" "<<list2->val;
+            cout<<endl;
+            if(flag){
+                ListNode* temp = list1->next;
+                list1->next = list2;
+                list1 = temp;
+                flag = false;
+            }
+            else{
+                ListNode* temp = list2->next;
+                list2->next = list1;
+                list2 = temp;
+                flag = true;
+            }
+        }
+      return;
+        
+    }
+};
