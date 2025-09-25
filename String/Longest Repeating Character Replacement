@@ -1,0 +1,22 @@
+1.
+class Solution {
+public:
+    int characterReplacement(string s, int k) {
+        map<char,int> mp;
+        int i=0,j=0;
+        int n = s.size();
+        int maxCount = 0;
+        int ans = 0;
+        while(j<n){
+            mp[s[j]]++;
+            maxCount = max(maxCount, mp[s[j]]);
+            if(j-i+1-maxCount>k){
+                mp[s[i]]--;
+                i++;
+            }
+            ans = max(ans, j-i+1);
+            j++;
+        }   
+        return ans;
+    }
+};
