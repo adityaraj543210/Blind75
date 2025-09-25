@@ -1,0 +1,36 @@
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        unordered_map<char, int> mp;
+        for (auto ch : t)
+            mp[ch]++;
+        for(auto ch:t) mp2[ch]++;
+        int cnt = mp.size();
+        int miniLen = INT_MAX;
+       pair<int,int> res = {-1,-1};
+        int i = 0, j = 0;
+        int n = s.size();
+        while (j < n) {
+            if (mp.find(s[j]) != mp.end()) {
+                mp[s[j]]--;
+                if (mp[s[j]] == 0)
+                    cnt--;
+            }
+            while (cnt == 0) {
+                if (j - i + 1 < miniLen) {
+                    miniLen = j-i+1;
+                    res = {i,j};
+                }
+                if (mp.find(s[i]) != mp.end()) {
+                    mp[s[i]]++;
+                    if (mp[s[i]] == 1)
+                        cnt++;
+                }
+                i++;
+            }
+            j++;
+        }
+        if(res.first == -1) return "";
+        return s.substr(res.first, res.second-res.first+1);
+    }
+};
