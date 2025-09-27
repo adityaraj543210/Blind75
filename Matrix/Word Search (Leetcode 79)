@@ -1,0 +1,38 @@
+class Solution {
+public:
+    vector<int> dx = {1, -1, 0, 0};
+    vector<int> dy = {0, 0, 1, -1};
+    int m, n;
+    vector<vector<int>> dfsvis;
+    bool exist(vector<vector<char>>& board, string word) {
+        m = board.size();
+        n = board[0].size();
+        dfsvis.assign(m, vector<int>(n, 0));
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (word[0] == board[i][j] && dfs(board, i, j, word, 1))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    bool dfs(vector<vector<char>>& board, int r, int c, string word,
+             int index) {
+        if (index == word.size())
+            return true;
+        dfsvis[r][c] = 1;
+        for (int k = 0; k < 4; k++) {
+            int x = r + dx[k];
+            int y = c + dy[k];
+            if (x >= 0 && y >= 0 && x < m && y < n &&
+                word[index] == board[x][y] && !dfsvis[x][y]) {
+                if (dfs(board, x, y, word, index + 1))
+                    return true;
+            }
+        }
+        dfsvis[r][c] = 0;
+        return false;
+    }
+};
