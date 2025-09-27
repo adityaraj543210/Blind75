@@ -1,0 +1,38 @@
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        vector<int> ans;
+        int m = matrix.size();
+        int n = matrix[0].size();
+        int rb = n - 1, lb = 0, tb = 0,
+            bb = m - 1; // rb-> right bound, left bound, top bound bottombound
+
+        while (lb <= rb && bb >= tb) {
+
+            //left to right
+            for (int i = lb; i <= rb && lb <= rb && bb >= tb; i++) {
+                ans.push_back(matrix[tb][i]);
+            }
+            tb++;
+
+            //top to bottom
+            for (int j = tb; j <= bb && lb <= rb && bb >= tb; j++) {
+                ans.push_back(matrix[j][rb]);
+            }
+            rb--;
+
+            //bottom right to left
+            for (int k = rb; k >= lb && lb <= rb && bb >= tb; k--) {
+                ans.push_back(matrix[bb][k]);
+            }
+            bb--;
+
+            //bottom to top
+            for (int l = bb; l >= tb && lb <= rb && bb >= tb; l--) {
+                ans.push_back(matrix[l][lb]);
+            }
+            lb++;
+        }
+        return ans;
+    }
+};
