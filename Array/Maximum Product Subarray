@@ -1,0 +1,34 @@
+1. 
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        int n = nums.size();
+        vector<pair<int,int>> dp(n); //store max and min
+        dp[0]={nums[0], nums[0]};
+        int ans = nums[0];
+        for(int i=1; i<n; i++){
+            int maxi = max({nums[i], dp[i-1].first*nums[i], dp[i-1].second*nums[i]});
+            int mini = min({nums[i], dp[i-1].first*nums[i], dp[i-1].second*nums[i]});
+            dp[i]={maxi, mini};
+            ans = max(ans, maxi);
+        }
+        return ans;
+    }
+};
+
+2. class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        int n = nums.size();
+        //vector<pair<int,int>> dp(n); //store max and min
+        pair<int,int> prev ={nums[0], nums[0]};
+        int ans = nums[0];
+        for(int i=1; i<n; i++){
+            int maxi = max({nums[i], prev.first*nums[i], prev.second*nums[i]});
+            int mini = min({nums[i], prev.first*nums[i], prev.second*nums[i]});
+            prev={maxi, mini};
+            ans = max(ans, maxi);
+        }
+        return ans;
+    }
+};
