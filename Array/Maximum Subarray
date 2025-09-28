@@ -1,0 +1,34 @@
+1. Approach 1
+
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> dp(n);
+        //dp[i]-> maxm subarray sum including this one ith one 
+        int maxi = nums[0];
+        dp[0]=nums[0];
+        for(int i=1; i<n; i++){
+            dp[i] = max(nums[i]+dp[i-1], nums[i]);
+            maxi = max(maxi, dp[i]);
+        }
+        return maxi;
+    }
+};
+
+2. Approach 2
+
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int n = nums.size();
+        int maxi = nums[0];
+        int prev=nums[0];
+        for(int i=1; i<n; i++){
+            int temp = max(nums[i]+prev, nums[i]);
+            maxi = max(maxi, temp);
+            prev = temp;
+        }
+        return maxi;
+    }
+};
